@@ -1,0 +1,42 @@
+﻿====== OpenSAND Manual ======
+
+In order to study the impact of the beam-hopping implementation on a satellite communication, it will be necessary to set up the BHBox on an OpenSAND platform previously deployed. The image below describes the architecture used.
+
+{{ DokuWiki/Images/architecture_opensand.png |}}
+
+The BHBox will be deployed on the gateway. So, we need to filter all the packets arriving from WS_GW and destined for WS_ST. To do this, it is therefore necessary to set up the following filtering rule on GW:
+
+<code>iptables –I FORWARD –o opensand –j NFQUEUE</code>
+
+Then just run the run_bh binary on GW with the required parameters. Beam-Hopping is then implemented on the satellite communication.
+
+<code>./run_bh -bs $bhs -f $freq (--debug -d $duration)</code>
+
+For more information about the parameters of the BHBox, the **[[Architecture of BHBox]]** section can be consulted.
+
+===== Influence of the BHBox on network performance ======
+
+The purpose of this section is to see how the BHBox changes the flow profile, latency and jitter on an OpenSAND platform.
+
+In the case of non-beam-hopped communication (No BHBox or BHBox with timeline[1.1]), if a rate of 22.5 Mbit/s is sent by iperf from WS-GW to WS-ST, the profile rate received by the end user is as follows:
+
+{{ DokuWiki/Images/goodput_after_opensand_without_BHBox.png  |}}
+
+Flow peaks are observed every 10ms. Indeed, OpenSAND buffers the packets arriving on the GW to retransmit them every 10ms (default value) to the terminal by adding the desired delay.
+
+If the BHBox is set up on GW with parameters BHS=13 ms and freq=2 (timeline [1.0]), the output rate of the GW (GW opensand_tun interface) has the following profile:
+
+{{ DokuWiki/Images/goodput_after_BHBox_before_opensand.png |}}
+
+This traffic will then pass through OpenSAND. The flow profile finally received by the ST and the WS-ST end user is as follows:
+
+{{ DokuWiki/Images/goodput_after_opensand_with_BHBox.png |}}
+
+It could also be interesting to look how the implementation of the BHBox changes latency and jitter on satellite communication performed by OpenSAND. The OpenBACH jobs iperf, fping, owamp_client/owamp_server can be used to obtain these metrics in the 3 cases tested (without BHBox, with BHBox and timeline [1, 1] and finally with BHBox and timeline [1 ,0]):
+
+^                      ^  Without BHBox  ^  With BHBox timeline [1,1]  ^  With BHBox timeline [1,0]  ^
+|  Average jitter (ms)  |  0.753  |  0,758  |  0,770  |
+|  Average latency (ms)  |  264.994  |  264.951  |  268.221  |
+
+The integration of the BHBox on OpenSand almost does not change the jitter on the communication. By comparing the latency values for the two cases without beam-hopping (without BHBox and with BHBox and timeline [1, 1]), we identify that the packet passage at the application level does not have a major influence on latency. With the execution of the BHBox with a timeline [1.0], we observe an increase in the average latency of **3.27 ms**, which is very close to the theoretically expected value 3.25 ms. 
+

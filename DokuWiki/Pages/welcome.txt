@@ -1,0 +1,25 @@
+﻿====== Welcome to BHBox wiki ======
+
+The BHBox is a software developed in C++ that aims to emulate the BH (Beam-Hopping) on a satellite telecommunication system. To do so, the box adds a temporal intermittency on an interface. It uses ''netfilter'' to intercept incoming packets in order to send them only when the recipient’s beam is illuminated by the satellite.
+
+The BHBox therefore represents a solution to study the impact of the implementation of Beam-Hopping on the end-to-end quality of service and on telecommunication services.
+
+===== Manuals ======
+
+Please follow the instructions in the **[[Installation Manual]]** section and the **[[User manual]]** section to familiarize yourself with the software. The **[[OpenSAND Manual]]** section provides a solution to use the BHBox in an OpenSAND platform.
+
+===== Design of BHBox ======
+
+The BHBox is a multilayer filter. It operates at the network level and then at the application level.
+
+At the network level, the BHBox uses ''netfilter'' to handle incoming packets which have to be concerned by the beam-hopping. Then ''netfilter'' allows these packets to be redirected to a local socket instead of being routed to the end user.
+
+At the application level, the binary ''run_bh'' retrieves packets arriving on the socket. Then, it adds them to a FIFO pipe. It will then unpack the packets and re-send them according to the lighting profile of the recipient defined in the parameter.
+
+For more information, see the **[[Architecture of BHBox]]**.
+
+===== Specific vocabularies ======
+In order to understand all the documentation of the BHBox, the following vocabulary is important :
+
+  * ''BHS (Beam-Hopping Slot)'' : the smallest unit of time during which a beam can be considered as switched on.
+  * ''TimeLine'' : the lighting profile of the recipient. It is composed of 1 and 0. State 1 corresponds to a beam illuminated by the satellite. During state 0, the receiver is not illuminated. The TimeLine will be repeated indefinitely until the end of the program execution.

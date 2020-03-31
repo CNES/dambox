@@ -1,0 +1,22 @@
+﻿====== Architecture of beam-hopping-interface-emulator ======
+
+The program developed is a multithreaded application. Its design can be summarized by the diagram below:
+
+{{ DokuWiki/Images/architecture_BHBox_detailled.png |}}
+
+===== Parameters of the beam-hopping-interface-emulator ======
+The help for setting the executable can be obtained by using the command:
+<code>./run_bh --help</code>
+
+{{ DokuWiki/Images/help_BHBox.png |}}
+
+===== Shared variables ======
+
+  * **''beamState''**: Gives the illumination state. If the beam state is 1, the beam is considered to be ON, otherwise it is considered to be OFF. This variable can be viewed and modified by several threads, so it is protected by a mutex.
+  * **''signalPktAdded''**: this Boolean indicates at a given time t whether or not a signal mechanism should be used by the threads process_rcv_write and process_read_send. This variable can be viewed and modified by several threads, so it is protected by a mutex.
+
+===== The threads ======
+
+  * **''scheduler''**: this thread manages the timeline defined by the program's input parameter. If the timeline indicates an ON state, it sets the shared variable ''beamState'' to 1 and sends a signal to ''process_read_send'' to inform it that the beam is now ON. Otherwise, it sets the ''beamState'' variable to 0. After this step, it waits until the time of the next bhs.
+  * **''process_rcv_write''**: this thread receives the packets from the socket. It then stores them in a FIFO. If the shared variable ''signalPktAdded'' is 1, it sends a signal to ''process_read_send to inform'' it that a packet has just been added to the FIFO.
+  * **''process_read_send''**: This thread waits until receiving a signal informing it that the beam is ON. When the signal is received, it empties the entire FIFO and sends the packets. It then waits to receive a signal informing it that a new packet has been stored, while checking that the beam is still ON. If it does, it sends the packet. Otherwise, it waits for the next signal informing it that the beam is on.

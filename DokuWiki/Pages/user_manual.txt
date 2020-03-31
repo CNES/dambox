@@ -1,0 +1,92 @@
+﻿====== User Manual ======
+
+Filtering rules based on iptables are necessary to redirect incoming packets to the BHBox.
+
+<code>
+iptables –I FORWARD –j NFQUEUE
+</code>
+
+Thanks to this iptables rule and netfilter, the traffic will be redirected to the BHBox.
+
+It may be interesting to add some parameters to the filtering rule :
+
+  * ''-p'' : Filter only such types of protocols (e.g.: UDP)
+  * ''-o'' : Filter only packets intended for an interface
+  * ''-i'' : Filter only packets arriving from an interface
+  * ''-d'' : Filter only packets destined to an IP address 
+  * ''-s'' : Filter only packets sent by an IP address
+
+To delete the filter rule, simply execute the following command:
+
+<code>
+iptables -F
+</code>
+
+===== Execution of the beam-hopping ======
+
+In order to launch the BHBox, and only after setting up the above filtering, the following command can be executed
+
+<code>
+./run_bh -bs $bhs -f $freq (-d $duration --debug) 
+</code>
+
+The launching of the BHBox therefore requires at least 2 parameters:
+  * ''bhs'' : duration  in us (microsecond) of a timeslot.
+  * ''freq'' : Frequency of beam illumination. The beam will be switched on once every freq timeslot (Example: for freq=6, we will have a timeline [100000]).
+  * If you want to operate the BHBox for a defined time, you can enter a ''duration''. This duration must be entered in second. Otherwise, the executable will run until the user stop the program manually (ctrl+c, ctrl+z, ctrl+\)
+  * You can also activate the ''debug mode'' to follow the evolution of the timeline and fifo filling over time
+
+
+The program exploits these parameters to establish the timeline. Then all the incoming packets are stored on the FIFO. They are only retransmitted to the recipient when the beam is considered switched ON. (See **[[Architecture of BHBox]]** for more information about the parameters and the architecture of the program).
+
+{{ DokuWiki/Images/architecture_BHBox_simplified.png |}}
+
+At the end of the execution, if the debug mode is activated, the program gives access to two output files:
+
+  * ''profil_bh.txt'' : Evolution of the beam state over time
+  * ''profil_fifo.txt'' : Evolution of the FIFO filling over time. The unit is the bytes.
+
+===== Network profile after passing through the BHBox ======
+
+This section aims to show how the BHBox modifies the network profile and to check that it corresponds to expectations, i.e. a network profile that follows the timeline given in the BHBox parameter (No network traffic leaving the box when the beam state is 0, then restarting traffic when the beam state is 1).
+
+To validate the implementation of the BHBox, we exploit the following architecture.
+
+{{ DokuWiki/Images/network_architecture_without_opensand.png  |}}
+
+==== Impact on the goodput ====
+
+For this test, we use as parameter BHS=13 ms and freq=2 (timeline [1, 0]). By sending a regular traffic of 22.5 Mbit/s with iperf, the profile of the incoming and outgoing traffic on the BHBox is as follows:
+
+{{ goodput_after_BHBox_without_opensand.png |}}
+
+The rate profile follows the timeline profile. Flow peaks are observed each time the beam returns to the ON state. This corresponds to the moment when the program sends all the packets that have been stored in the FIFO while the beam was in the OFF state.
+
+==== Impact on the delay and jitter ====
+
+It can also be interesting to see how the BHBox modifies the latency and jitter of a communication. 
+This test was performed without the BHBox, with a BHBox and a timeline [1,1] and then with a timeline [1,0]. The BHS used is always 13ms. The test with the BHBox [1,1] is used to see if moving the packets up to application level before re-transmitting them affects the performances
+
+^                      ^  Without BHBox  ^  With BHBox timeline [1,1]  ^  With BHBox timeline [1,0]  ^
+|  Average jitter (ms)  |  0.0138  |  0.0121  |  0.232  |
+|  Average latency (ms)  |  0.2895  |  0.3145  |  3.5655  |
+
+Using the BHBox without really setting up beam-hopping (timeline [1,1]) only slightly modifies the latency and jitter of the communication
+
+With the timeline [1, 0] and the BHS=13ms, we see an increase in latency of **3.251ms**. This value corresponds to the expected value. Indeed, with a timeline [1,0], half of the packets will be interrupted by the BHBox. With a BHS of 13ms, packets will wait on average 6.5 ms in the bow. The theoretical value (6.5*50%=3.25) therefore corresponds to the experimental value found. There is also an increase in the average jitter with the introduction of the beam-hopping in the communication.
+
+==== Limitations of the BHBox ====
+
+The BHBox passes the packets through the application level for processing them. Thus, the processing time involved can causes some limitations directly linked to the throughout, the size of the packets and the BHS and timeline used. If the time during which the beam is considered as switched ON is no sufficient to send all the packets stored in the FIFO during the transmission interruption, packet losses will be observed.
+
+On the tested computer, for a parameter freq=11, i.e. a timeline [10000000000], the BHBox can support at least 4250 packets/s (e.g. a rate of 50 Mbit/s for packets of 1470 bytes). With this reference value, for other freq values, limit values can be deducted.
+
+These performances can be improved with the execution parameter –s (See **[[Architecture of BHBox]]** for more information).
+
+If better performances are desired, the improvement of the program is necessary. The fact of using more powerful computers can also be tested.
+
+Before any utilisation of the BHBox, it is highly recommended to test if the program has sufficient performance for the test needed in order to not make false conclusions about beam-hopping
+
+In addition, it is not recommended to use a BHS below one millisecond. Indeed, the program will have difficulties managing the evolution of the timeline and the results could be truncated.
+
+It is recommended to reproduce the tests presented in this section to assess the relevance of the exploited platform.
