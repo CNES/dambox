@@ -35,8 +35,8 @@ std::string getHelpEn(void){
 
     std::stringstream ssHelp;
 
-    ssHelp << "Usage: ./dam_box [-bs bhs -f freq |--timeline file] [options]" << std::endl;
-    ssHelp << "       ./dam_box [-h|--help] [-v|--version]" << std::endl << std::endl;
+    ssHelp << "Usage: ./dambox [-bs bhs -f freq |--timeline file] [options]" << std::endl;
+    ssHelp << "       ./dambox [-h|--help] [-v|--version]" << std::endl << std::endl;
     ssHelp << "BH Box options :" << std::endl << std::endl;
     ssHelp << "Available information :" << std::endl << std::endl;
     ssHelp << "-h, --help                       Print this message and quit" << std::endl;
@@ -61,8 +61,8 @@ std::string getErrorParameters(void){
 
     std::stringstream ssError;
 
-    ssError << "dam_box: invalid options" << std::endl;
-    ssError << "Try ./dam_box --help for more informations" << std::endl;
+    ssError << "dambox: invalid options" << std::endl;
+    ssError << "Try ./dambox --help for more informations" << std::endl;
 
     return ssError.str();
 }
@@ -80,9 +80,9 @@ std::string getErrorNoBHParameters(void){
 
     std::stringstream ssError;
 
-    ssError << "dam_box: Missing beam-hopping parameters settings " << std::endl;
-    ssError << "Usage: ./dam_box [-f|-m] [options]" << std::endl;
-    ssError << "Try ./dam_box --help for more informations" << std::endl;
+    ssError << "dambox: Missing dambox parameters settings " << std::endl;
+    ssError << "Usage: ./dambox [-f|-m] [options]" << std::endl;
+    ssError << "Try ./dambox --help for more informations" << std::endl;
 
     return ssError.str();
 }
@@ -96,7 +96,7 @@ std::string getRunningMessage(int i){
             ssRun << "Illumination Frequency = " << getFrequency() << std::endl;
     }
     ssRun << "Beam-Hopping Slot =  " << getBeamSlot().count() << " ns" << std::endl;
-    ssRun << "Running beam-hopping ..." << std::endl;
+    ssRun << "Running DamBOX ..." << std::endl;
 
     return ssRun.str();
 }
