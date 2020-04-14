@@ -34,7 +34,7 @@ To compile the source code, you must do so with at least C++11 version and inclu
 * **lnfnetlink**
 * **lnetfilter_queue**
 
-A makefile is available. Run the following command to obtain the binary dam_box:
+A makefile is available. Run the following command to obtain the binary dambox:
 
 > make -f DamBOX.mak
 
@@ -64,7 +64,7 @@ Execution of the DamBOX
 
 In order to launch the DamBOX, and only after setting up the above filtering, the following command can be executed
 
-> sudo ./dam_box -bs $bhs -f $freq (-d $duration --debug) 
+> sudo ./dambox -bs $bhs -f $freq (-d $duration --debug) 
 
 The launching of the DamBOX therefore requires at least 2 parameters:
 
@@ -82,6 +82,6 @@ At the end of the execution, if the debug mode is activated, the program gives a
 
 The help for setting the executable can be obtained by using the command:
 
-> ./dam_box --help
+> ./dambox --help
 
 More documentation can be found in the folder Documentation/ or at https://wiki.net4sat.org/doku.php (TBD)

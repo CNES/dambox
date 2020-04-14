@@ -116,7 +116,7 @@ int main (int ac, char **av)
         std::cout << "Number of packets sent by the software = " << iCompteurPktOut << std::endl;
 	}
 
-	std::cout << "[INFO] Beam-hopping stopped" << std::endl;
+	std::cout << "[INFO] DamBOX stopped" << std::endl;
 
 	return 0;
 }

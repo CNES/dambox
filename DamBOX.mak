@@ -27,7 +27,7 @@ LIB_RELEASE = $(LIB) -lnetfilter_queue -lnfnetlink -lpthread
 LDFLAGS_RELEASE = $(LDFLAGS) -s
 OBJDIR_RELEASE = .
 DEP_RELEASE =
-OUT_RELEASE = dam_box 
+OUT_RELEASE = dambox 
 
 OBJ_RELEASE = $(OBJDIR_RELEASE)/main.o $(OBJDIR_RELEASE)/nfq.o $(OBJDIR_RELEASE)/ordonnanceur.o $(OBJDIR_RELEASE)/process_rcv_write.o $(OBJDIR_RELEASE)/process_read_send.o $(OBJDIR_RELEASE)/ressources.o $(OBJDIR_RELEASE)/args.o
 
