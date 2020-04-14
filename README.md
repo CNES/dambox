@@ -26,7 +26,7 @@ The maximum size of the FIFO system must be set to a high value. This size is lo
 
 The source code of the software can be downloaded from the address below:
 
-> git clone https://forge.net4sat.org/silicom/rt-beam-hopping-service.git
+> git clone https://forge.net4sat.org/dambox/dambox.git/
 
 To compile the source code, you must do so with at least C++11 version and including the following libraries for the compilation:
 
