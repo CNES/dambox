@@ -33,20 +33,20 @@
 
 struct data{
 	long int iTimeStamp;
-	int iBeamState;
+	int iDamState;
 	long int iFifoSize;
 };
 
-extern std::mutex mtxBeamOn;
-extern std::condition_variable cvBeamOn;
+extern std::mutex mtxDamOn;
+extern std::condition_variable cvDamOn;
 
 extern std::mutex mtxStartTransmission;
 extern std::condition_variable cvStartTransmission;
 extern sem_t semStart;
 
 /*
- * Scheduler of the beam-hopping. According to the timeline and the timeslot,
- * it sends signal to process_nfq_handle when the beam is ON and after it sleeps
+ * Scheduler of the dam. According to the timeline and the timeslot,
+ * it sends signal to process_nfq_handle when the dam state is ON and after it sleeps
  * during a timeslot.
  */
 void timeLineManagement();

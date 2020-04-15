@@ -38,8 +38,8 @@ extern std::mutex mtxStartTransmission;
 extern std::condition_variable cvStartTransmission;
 extern sem_t semStart;
 
-extern std::mutex mtxBeamOn;
-extern std::condition_variable cvBeamOn;
+extern std::mutex mtxDamOn;
+extern std::condition_variable cvDamOn;
 
 extern int iFdSocket;
 extern int iWriteFdPkt;
@@ -56,7 +56,7 @@ extern int iCompteurPktIn;
 int addPktToFifo();
 
 /*
- * Thread which call addPktToifo. When the beam is ON, it send a signal
+ * Thread which call addPktToifo. When the dam state is ON, it send a signal
  * to process_nfq_handle every time a packet is received and added to the FIFO
  */
 void processNfqRecv();

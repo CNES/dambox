@@ -35,23 +35,23 @@ std::string getHelpEn(void){
 
     std::stringstream ssHelp;
 
-    ssHelp << "Usage: ./dambox [-bs bhs -f freq |--timeline file] [options]" << std::endl;
+    ssHelp << "Usage: ./dambox [-ds dam -f freq |--timeline file] [options]" << std::endl;
     ssHelp << "       ./dambox [-h|--help] [-v|--version]" << std::endl << std::endl;
-    ssHelp << "BH Box options :" << std::endl << std::endl;
+    ssHelp << "Dam Box options :" << std::endl << std::endl;
     ssHelp << "Available information :" << std::endl << std::endl;
     ssHelp << "-h, --help                       Print this message and quit" << std::endl;
     ssHelp << "-v, --version                    Print version information and quit" << std::endl << std::endl;
-    ssHelp << "Beam-Hopping parameters (REQUIRED) : " << std::endl << std::endl;
-    ssHelp << "-bs, --beamslot     #bhs[us]     Configuration of the beam-hopping slot duration in us (microsecond)" << std::endl;
-    ssHelp << "-f, --frequency     #freq        Configuration of the freq corresponding to the beam illumination frequency (If freq = 4, the beam is activated 1 time-slot out of 4)" << std::endl;
-    ssHelp << "-t, --timeline      #file_path   Use of a configuration file to define a custom timeline (BPH) of DamBOX" << std::endl;
+    ssHelp << "Dam (REQUIRED) : " << std::endl << std::endl;
+    ssHelp << "-ds, --damslot     #dams[us]     Configuration of the dam slot duration in us (microsecond)" << std::endl;
+    ssHelp << "-f, --frequency     #freq        Configuration of the freq corresponding to the dam illumination frequency (If freq = 4, the dam is activated 1 dam slot out of 4)" << std::endl;
+    ssHelp << "-t, --timeline      #file_path   Use of a configuration file to define a custom timeline of DamBOX" << std::endl;
     ssHelp << "                                     * Replace the usage of -f, the file must only containt 0 and 1 on his first line" << std::endl;
     ssHelp << "Execution options (OPTIONAL) :" << std::endl << std::endl;
     ssHelp << "-d, --duration      #d[sec]      Determination of a program execution duration" << std::endl;
     ssHelp << "                                     /!\\ Without this parameter, the binary runs continuously until a system interruption (ctrl+c, ctrl+z, ctrl+\\)" << std::endl;
     ssHelp << "-s, --simultaneous_verdict #nbr  Determination of the maximum number of packets that can be sent out the DamBOX simultaneously" << std::endl;
     ssHelp << "--debug                          Activation of the saving of the evolution of timeline and fifo filling over time" << std::endl;
-    ssHelp << "                                     * Generating files profil_fifo.txt and profil_bh.txt at the end of the execution" << std::endl;
+    ssHelp << "                                     * Generating files profil_fifo.txt and profil_dam.txt at the end of the execution" << std::endl;
 
     return ssHelp.str();
 
@@ -71,12 +71,12 @@ std::string getVersion(void){
 
     std::stringstream ssVersion;
 
-    ssVersion << "Version 1.2" << std::endl;
+    ssVersion << "Version 1.0" << std::endl;
 
     return ssVersion.str();
 }
 
-std::string getErrorNoBHParameters(void){
+std::string getErrorNoDamParameters(void){
 
     std::stringstream ssError;
 
@@ -95,7 +95,7 @@ std::string getRunningMessage(int i){
     }else{
             ssRun << "Illumination Frequency = " << getFrequency() << std::endl;
     }
-    ssRun << "Beam-Hopping Slot =  " << getBeamSlot().count() << " ns" << std::endl;
+    ssRun << "Dam Slot =  " << getDamSlot().count() << " ns" << std::endl;
     ssRun << "Running DamBOX ..." << std::endl;
 
     return ssRun.str();
@@ -189,11 +189,11 @@ void processArguments(int ac, char **av){
             iParameterIndex=iParameterIndex+2;
             iBoolFrequencyParameterDefined=1;
         }
-        else if(((strcmp(av[iParameterIndex],"-bs")==0) || (strcmp(av[iParameterIndex],"--beamslot")==0)) && ((iParameterIndex+1<ac) && (iBoolBsParameterDefined==0)&& (atoi(av[iParameterIndex+1])!=0))){
+        else if(((strcmp(av[iParameterIndex],"-bs")==0) || (strcmp(av[iParameterIndex],"--damslot")==0)) && ((iParameterIndex+1<ac) && (iBoolBsParameterDefined==0)&& (atoi(av[iParameterIndex+1])!=0))){
             if((atoi(av[iParameterIndex+1]) <= 500)){
-                std::cout << "[WARNING] It is not recommended to use beamslot less than 500us. The duration of some beamslot may be incorrect" << std::endl;
+                std::cout << "[WARNING] It is not recommended to use damslot less than 500us. The duration of some damslot may be incorrect" << std::endl;
             }
-            setBeamSlot(std::chrono::nanoseconds ((atoi(av[iParameterIndex+1]))*1000));
+            setDamSlot(std::chrono::nanoseconds ((atoi(av[iParameterIndex+1]))*1000));
             iBoolBsParameterDefined=1;
             iParameterIndex=iParameterIndex+2;
         }
@@ -237,7 +237,7 @@ void processArguments(int ac, char **av){
     if (((iBoolBsParameterDefined==1) && (iBoolFrequencyParameterDefined==1)) || ((iBoolFileParameterDefined==1) && (iBoolBsParameterDefined==1))){
         std::cout << getRunningMessage(iBoolFileParameterDefined);
     }else{
-        std::cout << getErrorNoBHParameters();
+        std::cout << getErrorNoDamParameters();
         exit(1);
     }
 

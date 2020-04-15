@@ -10,7 +10,7 @@ Specific vocabularies:
 ----------------------
 In order to understand all the documentation of the DamBOX, the following vocabulary is important:
 
-* **BHS** (Beam-Hopping Slot): the smallest unit of time during which a beam can be considered as switched on.
+* **DS** (Dam Slot): the smallest unit of time during which a beam can be considered as switched on.
 * **TimeLine**: the lighting profile of the recipient. It is composed of 1 and 0. State 1 corresponds to a beam illuminated by the satellite. During state 0, the receiver is not illuminated. The TimeLine will be repeated indefinitely until the end of the program execution.
 
 Installation of the DamBOX:
@@ -64,11 +64,11 @@ Execution of the DamBOX
 
 In order to launch the DamBOX, and only after setting up the above filtering, the following command can be executed
 
-> sudo ./dambox -bs $bhs -f $freq (-d $duration --debug) 
+> sudo ./dambox -ds $bhs -f $freq (-d $duration --debug) 
 
 The launching of the DamBOX therefore requires at least 2 parameters:
 
-* **bhs** : duration  in us (microsecond) of a timeslot.
+* **ds** : duration  in us (microsecond) of a timeslot.
 * **freq**: Frequency of beam illumination. The beam will be switched on once every freq timeslot (Example: for freq=6, we will have a timeline [100000]).
 * If you want to operate the DamBOX for a defined time, you can enter a **duration**. This duration must be entered in second. Otherwise, the executable will run until the user stop the program manually (ctrl+c, ctrl+z, ctrl+\)
 * You can also activate the **debug mode** to follow the evolution of the timeline and fifo filling over time
@@ -77,7 +77,7 @@ The program exploits these parameters to establish the timeline. Then all the in
 
 At the end of the execution, if the debug mode is activated, the program gives access to two output files:
 
-* **profil_bh.txt** : Evolution of the beam state over time
+* **profil_dam.txt** : Evolution of the dam state over time
 * **profil_fifo.txt** : Evolution of the FIFO filling over time. The unit is the bytes.
 
 The help for setting the executable can be obtained by using the command:

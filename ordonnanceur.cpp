@@ -35,7 +35,7 @@
 void timeLineManagement ()
 {
         //Definition of BH parameters (BHS, Frequency)
-        std::chrono::nanoseconds tBeamSlot=getBeamSlot();
+        std::chrono::nanoseconds tDamSlot=getDamSlot();
         int iDuration=getDuration();
 
 		//Definition of timeLine
@@ -53,7 +53,7 @@ void timeLineManagement ()
 
 		//TimeLine Index
 		int iIndexTimeline=0;
-		setBeamState(BEAM_ON);
+		setDamState(Dam_ON);
 
 		// List to save data over time if debug mode is activated
         std::list<data> lDataStored;
@@ -76,21 +76,21 @@ void timeLineManagement ()
                 lDataStored.push_back({tTimeStamp.count(), vTimeline[iIndexTimeline], getSizeFifoOctet()});
             }
 
-            //If beam state=0, update the variable
-			if(vTimeline[iIndexTimeline]==BEAM_OFF){
-                int iLastBeamState=getBeamState();
-				setBeamState(BEAM_OFF);
-				if((iLastBeamState==BEAM_ON) && (getSizeFifoPkt()>=LIMIT_PKT)){ //Limite à discuter
-                    std::cout << "[WARNING] Program not enough fast to send back packets. Some packets (" << getSizeFifoPkt() << ") may have been sent during beam OFF or next beam-slot" << std::endl;
+            //If dam state=0, update the variable
+			if(vTimeline[iIndexTimeline]==DAM_OFF){
+                int iLastDamState=getDamState();
+				setDamState(DAM_OFF);
+				if((iLastDamState==DAM_ON) && (getSizeFifoPkt()>=LIMIT_PKT)){ //Limite à discuter
+                    std::cout << "[WARNING] Program not enough fast to send back packets. Some packets (" << getSizeFifoPkt() << ") may have been sent during state OFF or next dam-slot" << std::endl;
 				}
 			}
 
-            //If beam state=1, send signal to process_read_send and update variables
-			if(vTimeline[iIndexTimeline]==BEAM_ON){
-                setBeamState(BEAM_ON);
+            //If dam state=1, send signal to process_read_send and update variables
+			if(vTimeline[iIndexTimeline]==DAM_ON){
+                setDamState(DAM_ON);
                 setSignalPktAdded(SIGNAL_PKT_ON);
-                std::unique_lock<std::mutex> lock(mtxBeamOn);
-                cvBeamOn.notify_one();
+                std::unique_lock<std::mutex> lock(mtxDamOn);
+                cvDamOn.notify_one();
                 lock.unlock();
 			}
 
@@ -103,11 +103,11 @@ void timeLineManagement ()
             //If duration time is over, update variable
 			if((isDurationFixed()) && (tTimeStamp.count()>iDuration*1e6)){
 				setEnd(END);
-				setBeamState(BEAM_OFF);
+				setDamState(DAM_OFF);
 			}
 
             //Wait until the next timeslot
-            tNextTimeSlot += tBeamSlot;
+            tNextTimeSlot += tDamSlot;
 			std::this_thread::sleep_until(tNextTimeSlot);
 		}
 
@@ -120,19 +120,19 @@ void timeLineManagement ()
                 std::cerr << "[ERROR] Cannot open file profil_fifo.txt" << std::endl;
             }
 
-            //File which store the beam_state over time
-            FILE* fBh = fopen("profil_bh.txt", "w");
-            if (fBh==NULL){
-                std::cerr << "[ERROR] Cannot open file profil_bh.txt" << std::endl;
+            //File which store the dam_state over time
+            FILE* fDam = fopen("profil_dam.txt", "w");
+            if (fDam==NULL){
+                std::cerr << "[ERROR] Cannot open file profil_dam.txt" << std::endl;
             }
 
             for(std::list<data>::iterator it=lDataStored.begin(); it!=lDataStored.end(); ++it)
             {
                 fprintf(fFifo, "%f %li\n", ((*it).iTimeStamp)/1e6,  (*it).iFifoSize);
-                fprintf(fBh, "%f %i \n", ((*it).iTimeStamp)/1e6, (*it).iBeamState);
+                fprintf(fDam, "%f %i \n", ((*it).iTimeStamp)/1e6, (*it).iDamState);
             }
             fclose(fFifo);
-            fclose(fBh);
+            fclose(fDam);
 		}
 
 		lDataStored.clear();

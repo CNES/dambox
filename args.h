@@ -38,7 +38,7 @@ std::string getErrorParameters(void);
 
 std::string getVersion(void);
 
-std::string getErrorNoBHParameters(void);
+std::string getErrorNoDamParameters(void);
 
 std::string getRunningMessage(int i);
 

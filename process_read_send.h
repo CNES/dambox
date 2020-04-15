@@ -35,20 +35,20 @@ extern int iReadFdPkt;
 extern int iReadFdSize;
 extern int iCompteurPktOut;
 
-extern std::mutex mtxBeamOn;
-extern std::condition_variable cvBeamOn;
+extern std::mutex mtxDamOn;
+extern std::condition_variable cvDamOn;
 
 extern std::mutex mtxDataInFifo;
 extern std::condition_variable cvDataInFifo;
 
 /*
  * This function empties the contents of the fifo and handle the packet
- * as long as the beam is on.
+ * as long as the dam is on.
  */
 void sendPackets(struct nfq_handle *h, struct nfq_q_handle *qh, int max_verdict);
 
 /*
- * Thread which call sendPackets when the beam reach the state ON
+ * Thread which call sendPackets when the dam slot reach the state ON
  * After this step, the thread call vider_fifo each time it receive
  * a signal of the thread process_nfq_recv (Signal that informs that
  * content has been written in the FIFO)

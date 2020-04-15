@@ -62,8 +62,8 @@
 #include <fstream>
 #include <string>
 
-#define BEAM_ON 1
-#define BEAM_OFF 0
+#define DAM_ON 1
+#define DAM_OFF 0
 #define END 1
 #define SIGNAL_PKT_ON 1
 #define SIGNAL_PKT_OFF 0
@@ -71,14 +71,14 @@
 typedef unsigned char byte;
 
 /*
- * Set the state of the beam to iB
+ * Set the state of the dam to iB
  */
-void setBeamState(int iB);
+void setDamState(int iB);
 
 /*
- * Get the state of the beam {0,1}
+ * Get the state of the dam slot {0,1}
  */
-int getBeamState(void);
+int getDamState(void);
 
 /*
  * Activation or deactivation of the signal communication between
@@ -157,24 +157,24 @@ void setDuration(int sec);
 int getDuration();
 
 /*
- * Set the beam activation frequency
+ * Set the dam activation frequency
  */
 void setFrequency(int freq);
 
 /*
- * Get the beam activation frequency
+ * Get the dam activation frequency
  */
 int getFrequency();
 
 /*
- * Set the duration in nanoseconds of a beam slot
+ * Set the duration in nanoseconds of a dam slot
  */
-void setBeamSlot(std::chrono::nanoseconds duration);
+void setDamSlot(std::chrono::nanoseconds duration);
 
 /*
- * Set the duration in nanoseconds of a beam slot
+ * Set the duration in nanoseconds of a dam slot
  */
-std::chrono::nanoseconds getBeamSlot();
+std::chrono::nanoseconds getDamSlot();
 
 /*
  * Add a value [0,1] to the timeline. Push the value add the end of the vector

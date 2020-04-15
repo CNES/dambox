@@ -111,9 +111,9 @@ void processNfqRecv ()
     cvDataInFifo.notify_one();
     lockDataInFifo.unlock();
 
-    std::unique_lock<std::mutex> lockBeamOn(mtxBeamOn);
-    cvBeamOn.notify_one();
-    lockBeamOn.unlock();
+    std::unique_lock<std::mutex> lockDamOn(mtxDamOn);
+    cvDamOn.notify_one();
+    lockDamOn.unlock();
 
 
 }

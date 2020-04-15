@@ -44,8 +44,8 @@ void sendPackets(struct nfq_handle *h, struct nfq_q_handle *qh, int maxVerdict){
 	char cBufPkt[4096] __attribute__ ((aligned));
 	byte bBufSize[3] __attribute__ ((aligned));
 
-    //Until the FIFO is not empty and beam is ON, read the FIFO and send packets
-	while((getSizeFifoPkt() !=0) && (getBeamState()) && (!isEnd())){
+    //Until the FIFO is not empty and dam is ON, read the FIFO and send packets
+	while((getSizeFifoPkt() !=0) && (getDamState()) && (!isEnd())){
 
             //Number of packet that will be send simultaneously
             int iIteration=std::min(getSizeFifoPkt(),maxVerdict);
@@ -85,16 +85,16 @@ void processNfqHandle (struct nfq_handle *h, struct nfq_q_handle *qh)
 
 	while(!isEnd())
 	{
-	    //Wait signal that inform that the beam in ON
-	    std::unique_lock<std::mutex> lockBeamOn(mtxBeamOn);
-	    cvBeamOn.wait(lockBeamOn);
-	    lockBeamOn.unlock();
+	    //Wait signal that inform that the dam in ON
+	    std::unique_lock<std::mutex> lockDamOn(mtxDamOn);
+	    cvDamOn.wait(lockDamOn);
+	    lockDamOn.unlock();
 
         //Call sendPackets funtion
 		sendPackets(h,qh,maxVerdict);
 
-        //As long as the beam is ON
-		while((getBeamState()) && (!isEnd()))
+        //As long as the dam is ON
+		while((getDamState()) && (!isEnd()))
 		{
 		    //Wait signal that inform that a packet have been stored in the FIFO
 
@@ -102,13 +102,13 @@ void processNfqHandle (struct nfq_handle *h, struct nfq_q_handle *qh)
             cvDataInFifo.wait(lockDataInFifo);
 			lockDataInFifo.unlock();
 
-			//If beam is ON
-			if(getBeamState()){
+			//If dam is ON
+			if(getDamState()){
                 sendPackets(h,qh,maxVerdict);
 			}
 		}
 
-        //Beam is ON, signal exchange is no longer useful
+        //Dam is ON, signal exchange is no longer useful
 		setSignalPktAdded(SIGNAL_PKT_OFF);
 	}
 

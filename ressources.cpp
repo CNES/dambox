@@ -39,8 +39,8 @@ int iFdSocket=0;
 int iCompteurPktIn=0;
 int iCompteurPktOut=0;
 
-std::mutex mtxBeamOn;
-std::condition_variable cvBeamOn;
+std::mutex mtxDamOn;
+std::condition_variable cvDamOn;
 
 std::mutex mtxDataInFifo;
 std::condition_variable cvDataInFifo;
@@ -50,23 +50,23 @@ std::condition_variable cvStartTransmission;
 sem_t semStart;
 
 std::mutex mtxBh;
-int iBeamState=0;
+int iDamState=0;
 
-void setBeamState(int iB)
+void setDamState(int iB)
 {
 	mtxBh.lock();
-	if(iBeamState != iB)
+	if(iDamState != iB)
 	{
-		iBeamState = iB;
+		iDamState = iB;
 	}
     mtxBh.unlock();
 }
 
-int getBeamState(void)
+int getDamState(void)
 {
 	int ireturn = 0;
 	mtxBh.lock();
-	ireturn = iBeamState;
+	ireturn = iDamState;
 	mtxBh.unlock();
 	return ireturn;
 }
@@ -196,14 +196,14 @@ std::string getTimelineFile(){
     return sTimelineFile;
 }
 
-std::chrono::nanoseconds tBeamSlot;
+std::chrono::nanoseconds tDamSlot;
 
-void setBeamSlot(std::chrono::nanoseconds duration){
-    tBeamSlot=duration;
+void setDamSlot(std::chrono::nanoseconds duration){
+    tDamSlot=duration;
 }
 
-std::chrono::nanoseconds getBeamSlot(){
-    return tBeamSlot;
+std::chrono::nanoseconds getDamSlot(){
+    return tDamSlot;
 }
 
 std::vector<int> vTimeline;
