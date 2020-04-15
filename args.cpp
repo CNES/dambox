@@ -190,7 +190,7 @@ void processArguments(int ac, char **av){
             iParameterIndex=iParameterIndex+2;
             iBoolFrequencyParameterDefined=1;
         }
-        else if(((strcmp(av[iParameterIndex],"-bs")==0) || (strcmp(av[iParameterIndex],"--damslot")==0)) && ((iParameterIndex+1<ac) && (iBoolBsParameterDefined==0)&& (atoi(av[iParameterIndex+1])!=0))){
+        else if(((strcmp(av[iParameterIndex],"-ds")==0) || (strcmp(av[iParameterIndex],"--damslot")==0)) && ((iParameterIndex+1<ac) && (iBoolBsParameterDefined==0)&& (atoi(av[iParameterIndex+1])!=0))){
             if((atoi(av[iParameterIndex+1]) <= 500)){
                 std::cout << "[WARNING] It is not recommended to use damslot less than 500us. The duration of some damslot may be incorrect" << std::endl;
             }
