@@ -35,7 +35,7 @@ std::string getHelpEn(void){
 
     std::stringstream ssHelp;
 
-    ssHelp << "Usage: ./dambox [-ds dam -f freq |--timeline file] [options]" << std::endl;
+    ssHelp << "Usage: ./dambox [-ds damslot -f freq |--timeline file] [options]" << std::endl;
     ssHelp << "       ./dambox [-h|--help] [-v|--version]" << std::endl << std::endl;
     ssHelp << "Dam Box options :" << std::endl << std::endl;
     ssHelp << "Available information :" << std::endl << std::endl;
@@ -81,7 +81,8 @@ std::string getErrorNoDamParameters(void){
     std::stringstream ssError;
 
     ssError << "dambox: Missing dambox parameters settings " << std::endl;
-    ssError << "Usage: ./dambox [-f|-m] [options]" << std::endl;
+    ssError << "Usage: ./dambox [-ds damslot -f freq |--timeline file] [options]" << std::endl;
+    ssError << "       ./dambox [-h|--help] [-v|--version]" << std::endl;
     ssError << "Try ./dambox --help for more informations" << std::endl;
 
     return ssError.str();
