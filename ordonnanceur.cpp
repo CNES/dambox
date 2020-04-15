@@ -53,7 +53,7 @@ void timeLineManagement ()
 
 		//TimeLine Index
 		int iIndexTimeline=0;
-		setDamState(Dam_ON);
+		setDamState(DAM_ON);
 
 		// List to save data over time if debug mode is activated
         std::list<data> lDataStored;
