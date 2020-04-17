@@ -64,11 +64,11 @@ Execution of the DamBOX
 
 In order to launch the DamBOX, and only after setting up the above filtering, the following command can be executed
 
-> sudo ./dambox -ds $bhs -f $freq (-d $duration --debug) 
+> sudo ./dambox -ds $damslot -f $freq (-d $duration --debug) 
 
 The launching of the DamBOX therefore requires at least 2 parameters:
 
-* **ds** : duration  in us (microsecond) of a timeslot.
+* **damslot** : duration  in us (microsecond) of a timeslot.
 * **freq**: Frequency of beam illumination. The beam will be switched on once every freq timeslot (Example: for freq=6, we will have a timeline [100000]).
 * If you want to operate the DamBOX for a defined time, you can enter a **duration**. This duration must be entered in second. Otherwise, the executable will run until the user stop the program manually (ctrl+c, ctrl+z, ctrl+\)
 * You can also activate the **debug mode** to follow the evolution of the timeline and fifo filling over time
