@@ -5,6 +5,7 @@ DamBOX is a software developed in C++ that intermittently releases the packet on
 
 DamBOX can be used to emulate beam hopping in satellite telecommunication system.
 
+The documentation can be found in the Documentation folder or at https://wiki.net4sat.org/doku.php?id=dambox:index
 
 Specific vocabularies:
 ----------------------
@@ -83,5 +84,3 @@ At the end of the execution, if the debug mode is activated, the program gives a
 The help for setting the executable can be obtained by using the command:
 
 > ./dambox --help
-
-More documentation can be found in the folder Documentation/ or at https://wiki.net4sat.org/doku.php (TBD)
