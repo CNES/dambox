@@ -43,6 +43,24 @@ A makefile is available. Run the following command to obtain the binary dambox:
 
 > make -f DamBOX.mak
 
+Generate a debian package:
+--------------------------
+
+You can generate a debian package (Ubuntu 16.04 only) with the following procedure.
+* Install the following dependences:
+
+> sudo apt-get install build-essential fakeroot devscripts libnetfilter-queue-dev
+
+* Then by issuing the following command in the root folder
+
+> dpkg-buildpackage -us -uc
+
+The package will be generated in the root folder. 
+You can install it by running: 
+
+> sudo dpkg -i dambox.deb
+
+
 Iptables configuration :
 ------------------------
 
