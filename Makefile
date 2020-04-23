@@ -68,6 +68,5 @@ $(OBJDIR_RELEASE)/args.o: $(OBJDIR_RELEASE)/args.cpp
 clean_release: 
 	rm -f $(OBJ_RELEASE) $(OUT_RELEASE)
 	rm -rf bin/Release
-	rm -rf $(OBJDIR_RELEASE)
 
 .PHONY: before_release after_release clean_release
