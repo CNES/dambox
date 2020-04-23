@@ -87,9 +87,9 @@ The help for setting the executable can be obtained by using the command:
 
 Get Involved
 ============
-DamBox is part of OpenBACH project
-See OpenBACH web site : http://www.openbach.org/ 
-Mailing list are available : users@opensand.org
+DamBox is part of Net4Sat and OpenBACH project
+
+See Net4Sat web site : https://www.net4sat.org/
 
 Authors
 =======
@@ -103,6 +103,7 @@ Silicom
 Licence
 =======
 Copyright © 2020 CNES
+
 OpenBACH is released under GPLv3 (see [COPYING](COPYING.txt) file).
 
 
