@@ -1,10 +1,14 @@
-Package: dambox
-Version: 1.0
-Section: custom
+Source: dambox
+Section: misc
 Priority: optional
-Architecture: all
-Essential: no
-Installed-Size: 1024
-Maintainer: CNES
-Description: Launch dambox binaries
+Maintainer: OpenBACH maintainers <admin@openbach.org>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.4
+Homepage: http://www.openbach.org/
+
+
+Package: dambox
+Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, libnetfilter-queue-dev
+Description: DamBox package 
+
