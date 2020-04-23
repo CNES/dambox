@@ -47,15 +47,16 @@ Generate a debian package:
 --------------------------
 
 You can generate a debian package (Ubuntu 16.04 only) with the following procedure.
-* Install the following dependences:
+Install the following dependences
 
 > sudo apt-get install build-essential fakeroot devscripts libnetfilter-queue-dev
 
-* Then by issuing the following command in the root folder
+Then by issuing the following command in the src folder
 
 > dpkg-buildpackage -us -uc
 
-The package will be generated in the root folder. 
+The package will be generated in the src folder
+
 You can install it by running: 
 
 > sudo dpkg -i dambox.deb
