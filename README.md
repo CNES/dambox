@@ -39,7 +39,7 @@ On Ubuntu 16.04, here are the requirements :
 
 > sudo apt install make g++ libnetfilter-queue-dev
 
-A makefile is available. Run the following command to obtain the binary dambox:
+A makefile is available. Run the following command in the root folder to obtain the binary dambox:
 
 > make
 
