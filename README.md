@@ -87,7 +87,7 @@ The help for setting the executable can be obtained by using the command:
 
 Get Involved
 ============
-DamBox is part of Net4Sat and OpenBACH project
+DamBox is part of Net4Sat and OpenBACH projects
 
 See Net4Sat web site : https://www.net4sat.org/
 
