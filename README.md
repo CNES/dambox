@@ -84,3 +84,25 @@ At the end of the execution, if the debug mode is activated, the program gives a
 The help for setting the executable can be obtained by using the command:
 
 > ./dambox --help
+
+Get Involved
+============
+DamBox is part of OpenBACH project
+See OpenBACH web site : http://www.openbach.org/ 
+Mailing list are available : users@opensand.org
+
+Authors
+=======
+OpenBACH is funded and promoted by CNES (French Space Center) as a reference open-source software tool within its research and development studies and activities in the domain of satellite communication systems and networks.
+
+Partners
+=======
+Silicom 
+
+
+Licence
+=======
+Copyright © 2020 CNES
+OpenBACH is released under GPLv3 (see [COPYING](COPYING.txt) file).
+
+
