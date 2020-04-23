@@ -35,6 +35,10 @@ To compile the source code, you must do so with at least C++11 version and inclu
 * **lnfnetlink**
 * **lnetfilter_queue**
 
+On Ubuntu 16.04, here are the requirements :
+
+> sudo apt install make g++ libnetfilter-queue-dev
+
 A makefile is available. Run the following command to obtain the binary dambox:
 
 > make -f DamBOX.mak
