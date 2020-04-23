@@ -7,3 +7,4 @@ Essential: no
 Installed-Size: 1024
 Maintainer: CNES
 Description: Launch dambox binaries
+Depends: ${shlibs:Depends}, ${misc:Depends}, libnetfilter-queue-dev
