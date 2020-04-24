@@ -14,7 +14,24 @@ In order to understand all the documentation of the DamBOX, the following vocabu
 * **DS** (Dam Slot): the smallest unit of time during which a beam can be considered as switched on.
 * **TimeLine**: the lighting profile of the recipient. It is composed of 1 and 0. State 1 corresponds to a beam illuminated by the satellite. During state 0, the receiver is not illuminated. The TimeLine will be repeated indefinitely until the end of the program execution.
 
-Installation of the DamBOX:
+Package installation:
+---------------------
+
+Add the OpenBACH repository :
+
+Update sources.list with net4sat openbach repository
+> echo "deb http://packages.net4sat.org/openbach xenial stable" | sudo tee /etc/apt/sources.list.d/dambox.list 
+
+Add Net4Sat repository GPG key
+> wget -O - http://packages.net4sat.org/support_net4sat_org_pub.gpg.key |sudo apt-key add -
+
+Update the list of available packages:
+>  sudo apt-get update 
+
+Install Dambox
+> sudo apt-get install dambox 
+
+Manuel installation of the DamBOX:
 --------------------------
 
 It is compulsory to install the *netfilter* library on the computer where the DamBOX will be deployed. To do this, simply execute the following command: 
