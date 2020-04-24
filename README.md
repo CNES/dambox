@@ -68,16 +68,19 @@ Install the following dependences
 
 > sudo apt-get install build-essential fakeroot devscripts libnetfilter-queue-dev
 
-Then by issuing the following command in the src folder
+Then by issuing the following command in the root folder
 
 > dpkg-buildpackage -us -uc
 
-The package will be generated in the src folder
+The package will be generated in the root folder
 
 You can install it by running: 
 
-> sudo dpkg -i dambox.deb
+> sudo dpkg -i ../dambox_1.0_amd64.deb
 
+You can remove the unnecessary files as follows:
+
+> rm ../dambox_1.0*
 
 Iptables configuration :
 ------------------------
