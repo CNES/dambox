@@ -65,6 +65,9 @@ $(OBJDIR_RELEASE)/ressources.o: $(OBJDIR_RELEASE)/ressources.cpp
 $(OBJDIR_RELEASE)/args.o: $(OBJDIR_RELEASE)/args.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c $(OBJDIR_RELEASE)/args.cpp -o $(OBJDIR_RELEASE)/args.o
 
+install: dambox
+	install -D dambox /usr/bin/dambox
+
 clean_release: 
 	rm -f $(OBJ_RELEASE) $(OUT_RELEASE)
 	rm -rf bin/Release
