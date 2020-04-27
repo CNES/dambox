@@ -31,8 +31,17 @@ Update the list of available packages:
 Install Dambox
 > sudo apt-get install dambox 
 
-Manuel installation of the DamBOX:
+Manual installation of the DamBOX:
 --------------------------
+
+The rest of this README considers a package installation. 
+If you want to proceed a manual installation, please replace
+> dambox 
+
+by
+> ./dambox 
+
+in the provided commands lines. Or simply edit the $PATH variable. 
 
 It is compulsory to install the *netfilter* library on the computer where the DamBOX will be deployed. To do this, simply execute the following command: 
 
