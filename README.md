@@ -24,13 +24,13 @@ DamBOX is a multilayer filter. It operates at the network level and then at the 
 - At the network level, DamBOX uses *netfilter* to handle incoming packets which are concerned by the blocking and releasing functions. *netfilter* redirects the relevant packets to a local socket instead of routing them to the output interface.
 - At the application level, the binary *dambox* retrieves packets arriving on the socket and adds them to a FIFO queue. It releases the packets on the output interface depending on the timeline.
 
-For more information, see the <details><summary>detailed design document</summary>.
+<details><summary>For more information, see the detailed design document</summary>
 
 TODO
 
 </details>
 
-In order to understand all the documentation of the DamBOX, the following vocabulary is important:
+Vocabulary:
 
 * **DS** (Dam Slot): the smallest unit of time during which a beam can be considered as switched on.
 * **TimeLine**: the lighting profile oef the recipient. It is composed of 1 and 0. State 1 corresponds to a beam illuminated by the satellite. During state 0, the receiver is not illuminated. The TimeLine will be repeated indefinitely until the end of the program execution.
