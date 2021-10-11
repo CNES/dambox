@@ -20,7 +20,12 @@ DamBOX can be used to emulate beam hopping in satellite telecommunication system
 
 ## Design document
 
-TODO 
+DamBOX is a multilayer filter. It operates at the network level and then at the application level.
+- At the network level, DamBOX uses *netfilter* to handle incoming packets which are concerned by the blocking and releasing functions. *netfilter* redirects the relevant packets to a local socket instead of routing them to the output interface.
+- At the application level, the binary *dambox* retrieves packets arriving on the socket and adds them to a FIFO queue. It releases the packets on the output interface depending on the timeline.
+
+For more information, see the Architecture of DamBOX.
+
 
 In order to understand all the documentation of the DamBOX, the following vocabulary is important:
 
