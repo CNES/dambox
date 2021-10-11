@@ -5,8 +5,6 @@ DamBOX is a software developed in C++ that intermittently releases the packet on
 
 DamBOX can be used to emulate beam hopping in satellite telecommunication system.
 
-The documentation can be found at https://wiki.net4sat.org/doku.php?id=dambox:index
-
 Specific vocabularies:
 ----------------------
 In order to understand all the documentation of the DamBOX, the following vocabulary is important:
@@ -51,9 +49,7 @@ The maximum size of the FIFO system must be set to a high value. This size is lo
 
 > sudo sysctl fs.pipe-max-size=66781584
 
-The source code of the software can be downloaded from the address below:
-
-> git clone https://forge.net4sat.org/dambox/dambox.git/
+The source code of the software can be downloaded through the git repository.
 
 To compile the source code, you must do so with at least C++11 version and including the following libraries for the compilation:
 
@@ -139,9 +135,7 @@ The help for setting the executable can be obtained by using the command:
 
 Get Involved
 ============
-DamBox is part of Net4Sat and OpenBACH projects
-
-See Net4Sat web site : https://www.net4sat.org/
+DamBox is part of OpenBACH project
 
 Authors
 =======
