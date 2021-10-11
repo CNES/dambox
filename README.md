@@ -24,8 +24,11 @@ DamBOX is a multilayer filter. It operates at the network level and then at the 
 - At the network level, DamBOX uses *netfilter* to handle incoming packets which are concerned by the blocking and releasing functions. *netfilter* redirects the relevant packets to a local socket instead of routing them to the output interface.
 - At the application level, the binary *dambox* retrieves packets arriving on the socket and adds them to a FIFO queue. It releases the packets on the output interface depending on the timeline.
 
-For more information, see the Architecture of DamBOX.
+For more information, see the <details><summary>detailed design document</summary>.
 
+TODO
+
+</details>
 
 In order to understand all the documentation of the DamBOX, the following vocabulary is important:
 
@@ -36,7 +39,7 @@ In order to understand all the documentation of the DamBOX, the following vocabu
 
 ### Package installation
 
-<details><summary><b>Show package installation</b></summary>
+<details><summary>Show package installation</summary>
 
 Add the OpenBACH repository :
 
@@ -56,7 +59,7 @@ Install Dambox
 
 ### Manual installation
 
-<details><summary><b>Show manual installation</b></summary>
+<details><summary>Show manual installation</summary>
 
 The rest of this README considers a package installation. 
 If you want to proceed a manual installation, please replace
@@ -95,7 +98,7 @@ A makefile is available. Run the following command in the root folder to obtain 
 
 ### Generate a debian package
 
-<details><summary><b>Show debian package generation </b></summary>
+<details><summary>Show debian package generation</summary>
 
 You can generate a debian package (Ubuntu 16.04 only) with the following procedure.
 Install the following dependences
@@ -145,7 +148,7 @@ To delete the filter rules, simply execute the following command:
 
 ### Execution
 
-<details><summary><b>Show DamBOX execution</b></summary>
+<details><summary>Show DamBOX execution</summary>
 
 In order to launch the DamBOX, and only after setting up the above filtering, the following command can be executed
 
@@ -174,7 +177,7 @@ The help for setting the executable can be obtained by using the command:
 ### Exploitation with OpenSAND
 
 
-<details><summary><b>Show OpenSAND exploitation</b></summary>
+<details><summary>Show OpenSAND exploitation</summary>
 
 TODO
 
@@ -183,7 +186,7 @@ TODO
 ### Orchestration with OpenBACH
 
 
-<details><summary><b>Show OpenBACH orchestration</b></summary>
+<details><summary>Show OpenBACH orchestration</summary>
 
 TODO
 
