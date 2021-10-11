@@ -5,7 +5,7 @@ DamBOX is a software developed in C++ that intermittently releases the packet on
 DamBOX can be used to emulate beam hopping in satellite telecommunication system.
 
 - [Installation](#installation)
-  - [Package installation](#package_installation)
+  - [Package installation](#package-installation)
   - [Manual installation](#manual-installation)
   - [Generate a debian package](#generate-a-debian-package)
 - [Exploitation](#exploitation)
