@@ -231,9 +231,10 @@ This traffic will then pass through OpenSAND. The flow profile finally received 
 
 It could also be interesting to look how the implementation of DamBOX changes latency and jitter on satellite communication performed by OpenSAND. The OpenBACH jobs iperf, fping, owamp_client/owamp_server can be used to obtain these metrics in the 3 cases tested (without DamBOX, with DamBOX and timeline [1, 1] and finally with DamBOX and timeline [1 ,0]):
 
-| | Without DamBOX 	| With DamBOX timeline [1,1] |	With DamBOX timeline [1,0]
-| Average jitter (ms) |	0.753 |	0,758 |	0,770
-| Average latency (ms) |	264.994 |	264.951 |	268.221
+| | Without DamBOX 	| With DamBOX timeline [1,1] |	With DamBOX timeline [1,0] |
+|-------------|-------------|-------------|-------------| 
+| Average jitter (ms) |	0.753 |	0,758 |	0,770 |
+| Average latency (ms) |	264.994 |	264.951 |	268.221 |
 
 The integration of DamBOX on OpenSand almost does not change the jitter on the communication. By comparing the latency values for the two cases without intermittency (without DamBOX and with DamBOX and timeline [1, 1]), we identify that the packet passage at the application level does not have a major influence on latency. With the execution of DamBOX with a timeline [1.0], we observe an increase in the average latency of 3.27 ms, which is very close to the theoretically expected value 3.25 ms. 
 
