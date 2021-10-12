@@ -186,6 +186,47 @@ The help for setting the executable can be obtained by using the command:
 
 > ./dambox --help
 
+The program exploits the specified parameters to establish the timeline. Then all the incoming packets are stored on the FIFO. They are only retransmitted to the recipient when the beam is considered switched ON. Architecture of DamBOX provides more information about the parameters and the architecture of the program.
+
+![Architecture of DamBOX simplified](architecture_dambox_simplified.png)
+
+At the end of the execution, if the debug mode is activated, the program gives access to two output files:
+- **profil_dam.txt** : Evolution of the blocking/releasing over time
+- **profil_fifo.txt** : Evolution of the FIFO filling over time. The unit is the bytes.
+
+#### Validation
+
+This section aims to validate how DamBOX stores and releases packets as expected.
+
+To validate the implementation of DamBOX, the following architecture is exploited. DamBOX is applied on Host 2 and on the interface towards Host 3.
+
+![Network architecture](network_architecture_without_opensand.png)
+
+##### Impact on the goodput
+
+For this test, DS is set to 13 ms and freq to 2 (the resulting timeline is [10]). Iperf3 transmit a UDP traffic at 22.5 Mbit/s.
+
+The profile of the incoming and outgoing traffic of DamBOX is shown below:
+
+![Goodput after DamBOX](goodput_after_dambox_without_opensand.png)
+
+The rate profile follows the timeline profile. Flow peaks are observed each time the packets are released at the interface goodput.
+
+##### Impact on the delay and jitter
+
+For further validate the implementation, this section assesses how DamBOX modifies the latency and jitter of a communication.
+
+This test was performed without DamBOX, with DamBox and a timeline [1,1] and then with a timeline [1,0]. The DS used is set to 13 ms.
+
+| | Without DamBOX | With DamBOX (timeline) [1,1] |	With DamBOX (timeline) [1,0] |
+|-------------|-------------|-------------|-------------|
+| Average jitter (ms) |	0.0138 	| 0.0121 |	0.232 |
+| Average latency (ms) | 	0.2895 |	0.3145 | 3.5655 |
+
+Using DamBOX without actually storing and releasing packets (e.g. with timeline [1,1]) does not have a considerable impact on the latency and jitter of the communication.
+
+With the timeline [1, 0] and the DS=13ms, we see a latency increase of 3.251ms. With a timeline [1,0], half of the packets will be interrupted by the DamBOX. With a DS of 13ms, packets will wait on average 6.5 ms in the box. The theoretical value (6.5*50%=3.25) corresponds to the experimental value. There is also an increase in the average jitter with the introduction of the beam-hopping in the communication.
+
 </details>
 
 ### Exploitation with OpenSAND
