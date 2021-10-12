@@ -1,8 +1,8 @@
 # DamBOX
 
-DamBOX is a software developed in C++ that intermittently releases the packet on the interface, like a dam : using netfilter, incoming packets are intercepted and blocked until released at the interface goodput. The user specifies the duration and frequency of the blocking and releasing function.
+DamBOX is a software developed in C++ that intermittently releases the packet on the interface, like a dam : using netfilter, incoming packets are intercepted and blocked until released at the interface goodput. The user specifies the duration and frequency of the blocking and releasing function. DamBOX can be used to emulate beam hopping in satellite telecommunication system.
 
-DamBOX can be used to emulate beam hopping in satellite telecommunication system.
+![DamBOX illustrated](dambox-illustrated.png)
 
 - [Design document](#design-document)
 - [Installation](#installation)
@@ -24,9 +24,24 @@ DamBOX is a multilayer filter. It operates at the network level and then at the 
 - At the network level, DamBOX uses *netfilter* to handle incoming packets which are concerned by the blocking and releasing functions. *netfilter* redirects the relevant packets to a local socket instead of routing them to the output interface.
 - At the application level, the binary *dambox* retrieves packets arriving on the socket and adds them to a FIFO queue. It releases the packets on the output interface depending on the timeline.
 
-<details><summary>For more information, see the detailed design document</summary>
+<details><summary>Deploy to see the detailed design document</summary>
 
-TODO
+![Architecture of DamBOX](archi_dambox.png)
+
+The help for setting the executable can be obtained by using the command:
+
+> dambox --help
+
+Shared variables:
+
+- **DamState**: gives the illumination state. If the state is 1, the packets are released; if the state is 0, the packets are stored. This variable can be viewed and modified by several threads, so it is protected by a mutex.
+- **signalPktAdded**: boolean that indicates at a given time t whether or not a signal mechanism should be used by the threads process_rcv_write and process_read_send. This variable can be viewed and modified by several threads, so it is protected by a mutex.
+
+The threads:
+
+- **scheduler**: this thread manages the timeline defined by the program's input parameter. If the timeline indicates state 1, it sets the shared variable damState to 1 and sends a signal to process_read_send to inform it that packets can be released. Otherwise, it sets the damState variable to 0. After this step, it waits until the time of the next ds expires.
+- **process_rcv_write**: this thread receives the packets from the socket and stores them in a FIFO queue. If the shared variable signalPktAdded is 1, it sends a signal to process_read_send to inform it that a packet has just been added to the FIFO.
+- **process_read_send**: this thread waits until receiving a signal informing it that the packets can be released. When the signal is received, it empties the entire FIFO and sends the packets. It then waits to receive a signal informing it that a new packet has been stored, while checking that the packets can still be released. If it does, it sends the packet. Otherwise, it waits for the next signal informing it that the packets can be released.
 
 </details>
 
@@ -39,7 +54,7 @@ Vocabulary:
 
 ### Package installation
 
-<details><summary>Show package installation</summary>
+<details><summary>Deploy to see installation through package</summary>
 
 Add the OpenBACH repository :
 
@@ -59,7 +74,7 @@ Install Dambox
 
 ### Manual installation
 
-<details><summary>Show manual installation</summary>
+<details><summary>Deploy to see how to manually install</summary>
 
 The rest of this README considers a package installation. 
 If you want to proceed a manual installation, please replace
@@ -98,7 +113,7 @@ A makefile is available. Run the following command in the root folder to obtain 
 
 ### Generate a debian package
 
-<details><summary>Show debian package generation</summary>
+<details><summary>Deploy to see debian package generation</summary>
 
 You can generate a debian package (Ubuntu 16.04 only) with the following procedure.
 Install the following dependences
@@ -122,7 +137,6 @@ You can remove the unnecessary files as follows:
 </details>
 
 ## Exploitation
-
 
 ### Iptables configuration
 
@@ -148,9 +162,9 @@ To delete the filter rules, simply execute the following command:
 
 ### Execution
 
-<details><summary>Show DamBOX execution</summary>
+<details><summary>Deploy to see manual DamBOX execution</summary>
 
-In order to launch the DamBOX, and only after setting up the above filtering, the following command can be executed
+In order to launch the DamBOX, and only after setting up the [Iptables configuration](#iptables-configuration), the following command can be executed:
 
 > sudo ./dambox -ds $damslot -f $freq (-d $duration --debug) 
 
@@ -177,16 +191,58 @@ The help for setting the executable can be obtained by using the command:
 ### Exploitation with OpenSAND
 
 
-<details><summary>Show OpenSAND exploitation</summary>
+<details><summary>Deploy to see OpenSAND exploitation</summary>
 
-TODO
+In order to study the impact of the beam-hopping implementation on a satellite communication, it will be necessary to set up the DamBOX on an OpenSAND platform previously deployed. The image below describes the architecture used. 
+
+![Architecture for the OpenSAND Exploitation](archi_opensand.png)
+
+#### DamBOX deployment
+
+DamBOX is deployed at the gateway.
+
+Packets arriving from WS_GW and destined for WS_ST need to be filtered. The necessary following filtering rule needs to be applied on the GW:
+
+> iptables –I FORWARD –o opensand –j NFQUEUE
+
+dambox binary needs to be run at the GW with the required parameters.
+
+> dambox -ds $ds -f $freq (--debug -d $duration)
+
+#### Impact of DamBOX on end-to-end UDP traffic goodput
+
+The purpose of this section is to see how the DamBOX changes the flow profile, latency and jitter on an OpenSAND platform.
+
+In the case of non-beam-hopped communication (No DamBOX or DamBOX with timeline[1.1]), if a UDP flow at rate 22.5 Mbit/s is transmitted by iperf from WS-GW to WS-ST, the profile rate received by the end user is as follows: 
+
+![Goodput after OpenSAND without DamBOX](goodput_after_opensand_without_dambox.png)
+
+Flow peaks are observed every 10ms. Indeed, OpenSAND buffers the packets arriving on the GW to retransmit them every 10ms (default value) to the terminal by adding the desired delay.
+
+If DamBOX is set up on GW with parameters BHS=13 ms and freq=2 (timeline [1.0]), the output rate of the GW (GW opensand_tun interface) has the following profile: 
+
+![Goodput after DamBOX before OpenSAND](goodput_after_dambox_before_opensand.png)
+
+This traffic will then pass through OpenSAND. The flow profile finally received by the ST and the WS-ST end user is as follows: 
+
+![Goodput after OpenSAND with DamBOX](goodput_after_opensand_with_dambox.png)
+
+#### Impact of DamBOX on end-to-end latency and jitter
+
+It could also be interesting to look how the implementation of DamBOX changes latency and jitter on satellite communication performed by OpenSAND. The OpenBACH jobs iperf, fping, owamp_client/owamp_server can be used to obtain these metrics in the 3 cases tested (without DamBOX, with DamBOX and timeline [1, 1] and finally with DamBOX and timeline [1 ,0]):
+
+| | Without DamBOX 	| With DamBOX timeline [1,1] |	With DamBOX timeline [1,0]
+| Average jitter (ms) |	0.753 |	0,758 |	0,770
+| Average latency (ms) |	264.994 |	264.951 |	268.221
+
+The integration of DamBOX on OpenSand almost does not change the jitter on the communication. By comparing the latency values for the two cases without intermittency (without DamBOX and with DamBOX and timeline [1, 1]), we identify that the packet passage at the application level does not have a major influence on latency. With the execution of DamBOX with a timeline [1.0], we observe an increase in the average latency of 3.27 ms, which is very close to the theoretically expected value 3.25 ms. 
 
 </details>
 
 ### Orchestration with OpenBACH
 
 
-<details><summary>Show OpenBACH orchestration</summary>
+<details><summary>Deploy to see OpenBACH orchestration</summary>
 
 TODO
 
