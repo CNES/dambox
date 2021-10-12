@@ -245,7 +245,8 @@ The integration of DamBOX on OpenSand almost does not change the jitter on the c
 
 <details><summary>Deploy to see OpenBACH orchestration</summary>
 
-TODO
+OpenBACH provides a job to deploy and run DamBOX on specific agents. 
+Please consult OpenBACH source repository to have more information on this feature.
 
 </details>
 
