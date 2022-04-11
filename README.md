@@ -58,11 +58,11 @@ Vocabulary:
 
 Add the OpenBACH repository :
 
-Update sources.list with net4sat openbach repository
-> echo "deb http://packages.net4sat.org/openbach xenial stable" | sudo tee /etc/apt/sources.list.d/dambox.list 
+Update sources.list with Net4Sat PPA on GitHub:
+> echo "deb https://raw.githubusercontent.com/CNES/net4sat-packages/master/ focal stable" | sudo tee /etc/apt/sources.list.d/github.net4sat.list
 
 Add Net4Sat repository GPG key
-> wget -O - http://packages.net4sat.org/support_net4sat_org_pub.gpg.key |sudo apt-key add -
+> curl -sS https://raw.githubusercontent.com/CNES/net4sat-packages/master/gpg/net4sat.gpg.key | sudo apt-key add -
 
 Update the list of available packages:
 >  sudo apt-get update 
